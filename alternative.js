@@ -134,5 +134,5 @@ async function favourite(imageId) {
     }
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', initialLoad);
+// // Initialize on page load
+// document.addEventListener('DOMContentLoaded', initialLoad);
