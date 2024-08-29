@@ -43,6 +43,9 @@ async function initialLoad() {
             select.value = breeds[0].id;
             await loadBreedData(breeds[0].id);
         }
+
+        // Start carousel
+        startCarousel()
     } catch (error) {
         console.error('Error loading breeds:', error);
     }
@@ -100,24 +103,29 @@ document.getElementById('getFavouritesBtn').addEventListener('click', async func
         const template = document.getElementById('carouselItemTemplate').content;
         carouselInner.innerHTML = '';
 
-        favourites.forEach(favourite => {
+        favourites.forEach(fav => {
             const clone = document.importNode(template, true);
             const img = clone.querySelector('img');
-            img.src = favourite.image.url;
-            img.alt = favourite.image.id;
+            img.src = fav.image.url;
+            img.alt = fav.image.id;
             const favButton = clone.querySelector(".favourite-button");
-            favButton.setAttribute('data-img-id', favourite.image.id);
+            favButton.setAttribute('data-img-id', fav.image.id);
             favButton.addEventListener("click", () => {
-              favourite(favourite.image.id);
+                console.log(window)
+              favourite(fav.image.id);
             });
             carouselInner.appendChild(clone);
         });
 
         // Activate carousel
-        if (favourites.length > 0) {
-            const carousel = new bootstrap.Carousel(document.getElementById('carouselExampleControls'));
-            carousel.refresh();
-        }
+        // if (favourites.length > 0) {
+        //     const carousel = new bootstrap.Carousel(document.getElementById('carouselExampleControls'));
+        //     carousel.refresh();
+        // }
+
+        // Start carousel
+        startCarousel()
+
     } catch (error) {
         console.error('Error fetching favourites:', error);
     }
@@ -141,6 +149,34 @@ async function favourite(imageId) {
         console.error('Error favouriting image:', error);
     }
 }
+
+// Function to start carousel
+function startCarousel() {
+  const multipleCardCarousel = document.querySelector("#carouselExampleControls");
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    const carousel = new bootstrap.Carousel(multipleCardCarousel, { interval: false });
+    const carouselWidth = $(".carousel-inner")[0].scrollWidth;
+    const cardWidth = $(".carousel-item").width();
+    let scrollPosition = 0;
+     $("#carouselExampleControls .carousel-control-next").unbind();
+    $("#carouselExampleControls .carousel-control-next").on("click", function () {
+      if (scrollPosition < carouselWidth - cardWidth * 4) {
+        scrollPosition += cardWidth;
+        $("#carouselExampleControls .carousel-inner").animate({ scrollLeft: scrollPosition }, 600);
+      }
+    });
+     $("#carouselExampleControls .carousel-control-prev").unbind();
+    $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+      if (scrollPosition > 0) {
+        scrollPosition -= cardWidth;
+        $("#carouselExampleControls .carousel-inner").animate({ scrollLeft: scrollPosition }, 600);
+      }
+    });
+  } else {
+    $(multipleCardCarousel).addClass("slide");
+  }
+}
+  
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', initialLoad);
