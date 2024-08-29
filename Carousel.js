@@ -61,4 +61,3 @@ export function start() {
     $(multipleCardCarousel).addClass("slide");
   }
 }
-

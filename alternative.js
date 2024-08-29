@@ -64,7 +64,11 @@ async function loadBreedData(breedId) {
             const img = clone.querySelector('img');
             img.src = image.url;
             img.alt = image.id;
-            clone.querySelector('.favourite-button').setAttribute('data-img-id', image.id);
+            const favButton = clone.querySelector(".favourite-button");
+            favButton.setAttribute('data-img-id', image.id);
+            favButton.addEventListener("click", () => {
+              favourite(image.id);
+            });
             carouselInner.appendChild(clone);
         });
 
@@ -101,7 +105,11 @@ document.getElementById('getFavouritesBtn').addEventListener('click', async func
             const img = clone.querySelector('img');
             img.src = favourite.image.url;
             img.alt = favourite.image.id;
-            clone.querySelector('.favourite-button').setAttribute('data-img-id', favourite.id);
+            const favButton = clone.querySelector(".favourite-button");
+            favButton.setAttribute('data-img-id', favourite.image.id);
+            favButton.addEventListener("click", () => {
+              favourite(favourite.image.id);
+            });
             carouselInner.appendChild(clone);
         });
 
